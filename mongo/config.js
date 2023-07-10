@@ -3,7 +3,7 @@ const { mongoose } = require("mongoose");
 
 const mongoConnection = () => {
   const url =
-    "mongodb+srv://<USERNAME>:<PASSWORD>@cluster0.3gcwidb.mongodb.net/?retryWrites=true&w=majority";
+    "mongodb+srv://sandeepsokle12:1f4zT3nPakLDsEh7@cluster0.3gcwidb.mongodb.net/?retryWrites=true&w=majority";
 
   mongoose
     .connect(url, {
