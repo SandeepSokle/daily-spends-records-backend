@@ -1,8 +1,9 @@
-function middle(req, res, next) {
-  if (!req.body.password) {
-    console.log("password required!!");
-    res.status(400).send("Password required!!");
-  } else {
+export function userAuthentication(req, res, next) {
+  try {
+    const authheader = req.headers.authorization;
+    console.log({ authheader });
     next();
+  } catch (error) {
+    res.status(404).send(err);
   }
 }

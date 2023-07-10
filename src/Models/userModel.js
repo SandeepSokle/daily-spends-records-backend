@@ -1,26 +1,36 @@
 const mongoose = require("mongoose");
-const { StringDecoder } = require("string_decoder");
 
-const UserSchema = new mongoose.Schema({
-  userData: {
-    type: Object,
-    required: true,
+const UserSchema = new mongoose.Schema(
+  {
+    name: {
+      type: String,
+      required: true,
+    },
+    phone: {
+      type: Number,
+      required: true,
+      default: 0,
+    },
+    email: {
+      type: String,
+      required: true,
+      unique: true,
+    },
+    password: {
+      type: String,
+      required: true,
+      default: "12345",
+    },
+    token: {
+      type: String,
+      default: "12345",
+    },
   },
-  name: {
-    type: String,
-    default: 0,
-  },
-  email: {
-    type: String,
-    default: 0,
-  },
-  uid: {
-    type: String,
-    unique: true,
-    default: 0,
-  },
-});
+  {
+    timestamps: true,
+  }
+);
 
-const users = mongoose.model("users", UserSchema);
+const userModel = mongoose.model("users", UserSchema);
 
-module.exports = users;
+module.exports = userModel;
