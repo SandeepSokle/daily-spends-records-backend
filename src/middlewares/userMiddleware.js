@@ -1,9 +1,25 @@
-export function userAuthentication(req, res, next) {
-  try {
-    const authheader = req.headers.authorization;
-    console.log({ authheader });
+var jwt = require("jsonwebtoken");
+
+ const userAuthentication = (req, res, next) => {
+  const authHeader = req.headers["authorization"];
+  const token = authHeader && authHeader.split(" ")[1];
+  if (token == null)
+    return res
+      .status(401)
+      .json({ success: false, message: "Provide Authorization" });
+  jwt.verify(token, "sokle", (err, user) => {
+    if (err) {
+      return res.status(403).json({
+        success: false,
+        message: "Authorization token is Invalid",
+        error: err,
+      });
+    }
+    req.user = user;
     next();
-  } catch (error) {
-    res.status(404).send(err);
-  }
-}
+  });
+};
+
+module.exports = {
+  userAuthentication,
+};

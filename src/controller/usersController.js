@@ -9,6 +9,7 @@ const getUsers = async (req, res, next) => {
   try {
     res.status(200).send({
       msg: "send Successfully!",
+      user: req.user,
     });
   } catch (err) {
     console.log(err.message);
