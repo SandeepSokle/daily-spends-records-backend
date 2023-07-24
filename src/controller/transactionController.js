@@ -1,3 +1,4 @@
+const moment = require("moment/moment");
 const transactionModel = require("../Models/transactionModel");
 
 const addRecords = async (req, res, next) => {
@@ -46,12 +47,23 @@ const editRecords = async (req, res, next) => {
 };
 
 const getRecords = async (req, res, next) => {
-  const { user } = req.query;
+  const { user, id } = req.query;
 
   try {
-    let record = await transactionModel.find({
-      user,
-    });
+    let record;
+    if (id) {
+      record = await transactionModel.findOne({
+        _id: id,
+      });
+    } else {
+      record = await transactionModel
+        .find({
+          user,
+        })
+        .sort({
+          createdAt: -1,
+        });
+    }
 
     res.status(200).send({
       msg: "Found Successfully!",
@@ -85,9 +97,53 @@ const deleteRecords = async (req, res, next) => {
   }
 };
 
+const getRecordsMonthly = async (req, res, next) => {
+  const { user } = req.query;
+
+  try {
+    console.log({ user });
+
+    const record = await transactionModel.aggregate([
+      {
+        $match: {
+          $expr: { $eq: ["$user", { $toObjectId: user }] },
+        },
+      },
+      {
+        $group: {
+          _id: {
+            month: { $month: "$date" },
+            year: { $year: "$date" },
+          },
+
+          total: {
+            $sum: "$amount",
+          },
+        },
+      },
+    ]);
+
+    console.log({
+      record,
+    });
+
+    res.status(200).send({
+      msg: "Found Successfully!",
+      count: record.length,
+      record,
+    });
+  } catch (err) {
+    res.status(400).send({
+      msg: "Not Found!",
+      err,
+    });
+  }
+};
+
 module.exports = {
   addRecords,
   editRecords,
   getRecords,
-  deleteRecords
+  deleteRecords,
+  getRecordsMonthly,
 };
