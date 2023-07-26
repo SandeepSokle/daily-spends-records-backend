@@ -140,10 +140,53 @@ const getRecordsMonthly = async (req, res, next) => {
   }
 };
 
+const getRecordsYearly = async (req, res, next) => {
+  const { user } = req.query;
+
+  try {
+    console.log({ user });
+
+    const record = await transactionModel.aggregate([
+      {
+        $match: {
+          $expr: { $eq: ["$user", { $toObjectId: user }] },
+        },
+      },
+      {
+        $group: {
+          _id: {
+            year: { $year: "$date" },
+          },
+
+          total: {
+            $sum: "$amount",
+          },
+        },
+      },
+    ]);
+
+    console.log({
+      record,
+    });
+
+    res.status(200).send({
+      msg: "Found Successfully!",
+      count: record.length,
+      record,
+    });
+  } catch (err) {
+    res.status(400).send({
+      msg: "Not Found!",
+      err,
+    });
+  }
+};
+
 module.exports = {
   addRecords,
   editRecords,
   getRecords,
   deleteRecords,
   getRecordsMonthly,
+  getRecordsYearly,
 };
