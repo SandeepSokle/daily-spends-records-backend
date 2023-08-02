@@ -5,14 +5,16 @@ const saltRounds = 10;
 var jwt = require("jsonwebtoken");
 
 const getUsers = async (req, res, next) => {
-  // console.log(req.body);
   try {
+    let user = await userModel.fine();
     res.status(200).send({
       msg: "send Successfully!",
-      user: req.user,
+      user,
     });
   } catch (err) {
-    console.log(err.message);
+    res.status(400).send({
+      msg: "send failed!",
+    });
   }
 };
 
@@ -33,15 +35,12 @@ const signUpUser = async (req, res, next) => {
       token: token,
     });
   } catch (error) {
-    console.log(error);
     res.status(400).send(error);
   }
 };
 
 const loginUser = async (req, res, next) => {
   const { email, password } = req.body;
-
-  console.log({ email, password });
   try {
     const user = await userModel.findOne({
       email,

@@ -101,8 +101,6 @@ const getRecordsMonthly = async (req, res, next) => {
   const { user } = req.query;
 
   try {
-    console.log({ user });
-
     const record = await transactionModel.aggregate([
       {
         $match: {
@@ -122,11 +120,6 @@ const getRecordsMonthly = async (req, res, next) => {
         },
       },
     ]);
-
-    console.log({
-      record,
-    });
-
     res.status(200).send({
       msg: "Found Successfully!",
       count: record.length,
@@ -144,8 +137,6 @@ const getRecordsYearly = async (req, res, next) => {
   const { user } = req.query;
 
   try {
-    console.log({ user });
-
     const record = await transactionModel.aggregate([
       {
         $match: {
@@ -164,11 +155,6 @@ const getRecordsYearly = async (req, res, next) => {
         },
       },
     ]);
-
-    console.log({
-      record,
-    });
-
     res.status(200).send({
       msg: "Found Successfully!",
       count: record.length,
