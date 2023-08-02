@@ -17,12 +17,13 @@ const getUsers = async (req, res, next) => {
 };
 
 const signUpUser = async (req, res, next) => {
-  const { name, email, phone, password } = req.body;
+  const { name, email, phone, address, password } = req.body;
   try {
     let user = await userModel.create({
       name,
       email,
       phone,
+      address,
       password,
     });
     let token = jwt.sign({ name, email, phone, _id: user._id }, "sokle");
@@ -32,13 +33,15 @@ const signUpUser = async (req, res, next) => {
       token: token,
     });
   } catch (error) {
-    // console.log(error)
+    console.log(error);
     res.status(400).send(error);
   }
 };
 
 const loginUser = async (req, res, next) => {
   const { email, password } = req.body;
+
+  console.log({ email, password });
   try {
     const user = await userModel.findOne({
       email,
