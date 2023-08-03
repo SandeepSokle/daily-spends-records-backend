@@ -6,10 +6,9 @@ var jwt = require("jsonwebtoken");
 
 const getUsers = async (req, res, next) => {
   try {
-    let user = await userModel.fine();
     res.status(200).send({
       msg: "send Successfully!",
-      user,
+      user: req.user,
     });
   } catch (err) {
     res.status(400).send({
