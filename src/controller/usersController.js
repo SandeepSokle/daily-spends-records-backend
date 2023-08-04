@@ -27,7 +27,10 @@ const signUpUser = async (req, res, next) => {
       address,
       password,
     });
-    let token = jwt.sign({ name, email, phone, _id: user._id }, "sokle");
+    let token = jwt.sign(
+      { name, email, phone, _id: user._id, address: user.address },
+      "sokle"
+    );
 
     res.status(200).send({
       msg: "send Successfully!",
@@ -47,7 +50,13 @@ const loginUser = async (req, res, next) => {
     if (!user) throw "User Not exist!";
     if (user.password != password) throw "Wrong password!";
     let token = jwt.sign(
-      { name: user.name, email: user.email, phone: user.phone, _id: user._id },
+      {
+        name: user.name,
+        email: user.email,
+        phone: user.phone,
+        _id: user._id,
+        address: user.address,
+      },
       "sokle"
     );
     res.status(200).send({

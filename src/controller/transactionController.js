@@ -1,5 +1,6 @@
 const moment = require("moment/moment");
 const transactionModel = require("../Models/transactionModel");
+const historyModel = require("../Models/historyModel");
 
 const addRecords = async (req, res, next) => {
   try {
@@ -168,6 +169,42 @@ const getRecordsYearly = async (req, res, next) => {
   }
 };
 
+const getActivityLogs = async (req, res, next) => {
+  const { user } = req.query;
+
+  try {
+    let activityLogs = await historyModel
+      .find({
+        user,
+      })
+      .limit(1000)
+      .sort({
+        createdAt: -1,
+      });
+
+    res.status(200).send({
+      msg: "Found Successfully!",
+      count: activityLogs.length,
+      activityLogs,
+    });
+  } catch (err) {
+    res.status(400).send({
+      msg: "Not Found!",
+      err,
+    });
+  }
+};
+
+// const exportAllMemberModel = asyncHandler(async (req, res, next) => {
+//   let data = await MemberModel.find().lean();
+//   const csvFields = Object.keys(data[0]);
+//   const json2csvParser = new Json2csvParser({ csvFields });
+//   const csv = json2csvParser.parse(data);
+//   res.set("Content-Disposition", "attachment;filename=authors.csv");
+//   res.set("Content-Type", "application/octet-stream");
+//   res.send(csv);
+// });
+
 module.exports = {
   addRecords,
   editRecords,
@@ -175,4 +212,5 @@ module.exports = {
   deleteRecords,
   getRecordsMonthly,
   getRecordsYearly,
+  getActivityLogs,
 };
