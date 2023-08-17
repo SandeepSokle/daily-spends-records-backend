@@ -30,6 +30,22 @@ const UserSchema = new mongoose.Schema(
       default: "Jind",
       unique: false,
     },
+    expenceCategories: {
+      type: [String],
+      required: false,
+      default: [
+        "Rent or mortgage payment",
+        "Internet and cable bills",
+        "Home maintenance",
+        "Fuel or public transportation costs",
+        "Food Expenses",
+        "Personal Care",
+        "Entertainment and Recreation Expenses",
+        "Savings and Investments",
+        "Childcare and Family Expenses",
+      ],
+      unique: false,
+    },
     token: {
       type: String,
       default: "12345",

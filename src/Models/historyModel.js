@@ -8,14 +8,19 @@ const historySchema = new mongoose.Schema(
       required: true,
       unique: false,
     },
-    spendFor: {
-      type: String,
-      required: true,
-    },
     spendBy: {
       type: String,
       required: true,
       unique: false,
+    },
+    expenceCategories: {
+      type: String,
+      required: true,
+      unique: false,
+    },
+    spendFor: {
+      type: String,
+      required: true,
     },
     amount: {
       type: Number,

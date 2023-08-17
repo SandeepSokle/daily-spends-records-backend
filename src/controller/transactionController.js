@@ -113,10 +113,28 @@ const getRecordsMonthly = async (req, res, next) => {
           _id: {
             month: { $month: "$date" },
             year: { $year: "$date" },
+            expenseType: "$expenceCategories",
           },
 
-          total: {
+          totalAmount: {
             $sum: "$amount",
+          },
+        },
+      },
+      {
+        $group: {
+          _id: {
+            year: "$_id.year",
+            month: "$_id.month",
+          },
+          expenses: {
+            $push: {
+              expenseType: "$_id.expenseType",
+              totalAmount: "$totalAmount",
+            },
+          },
+          total: {
+            $sum: "$totalAmount",
           },
         },
       },
@@ -148,10 +166,27 @@ const getRecordsYearly = async (req, res, next) => {
         $group: {
           _id: {
             year: { $year: "$date" },
+            expenseType: "$expenceCategories",
           },
 
-          total: {
+          totalAmount: {
             $sum: "$amount",
+          },
+        },
+      },
+      {
+        $group: {
+          _id: {
+            year: "$_id.year",
+          },
+          expenses: {
+            $push: {
+              expenseType: "$_id.expenseType",
+              totalAmount: "$totalAmount",
+            },
+          },
+          total: {
+            $sum: "$totalAmount",
           },
         },
       },

@@ -7,14 +7,19 @@ const transactionSchema = new mongoose.Schema(
       ref: "users",
       required: true,
     },
-    spendFor: {
-      type: String,
-      required: true,
-    },
     spendBy: {
       type: String,
       required: true,
       unique: false,
+    },
+    expenceCategories: {
+      type: String,
+      required: false,
+      unique: false,
+    },
+    spendFor: {
+      type: String,
+      required: true,
     },
     amount: {
       type: Number,

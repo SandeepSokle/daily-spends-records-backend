@@ -68,8 +68,22 @@ const loginUser = async (req, res, next) => {
   }
 };
 
+const getUserExpense = async (req, res, next) => {
+  try {
+    res.status(200).send({
+      msg: "send Successfully!",
+      userExpenceCategories: req.user.expenceCategories,
+    });
+  } catch (err) {
+    res.status(400).send({
+      msg: "send failed!",
+    });
+  }
+};
+
 module.exports = {
   getUsers,
   signUpUser,
   loginUser,
+  getUserExpense,
 };
