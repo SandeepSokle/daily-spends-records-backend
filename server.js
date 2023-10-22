@@ -15,7 +15,7 @@ app.use((req, res, next) => {
 
 app.use(express.json());
 app.use(cors());
-app.get("/",()=>{
+app.get("/",(req,res)=>{
   res.status(200).send("Hi User, Welcome")
 })
 app.use("/api/2023", rootRouter);
