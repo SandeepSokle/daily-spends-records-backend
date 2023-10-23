@@ -49,7 +49,7 @@ const UserSchema = new mongoose.Schema(
     token: {
       type: String,
       default: "12345",
-      unique: true,
+      unique: false,
     },
   },
   {
